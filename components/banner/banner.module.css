@@ -1,0 +1,49 @@
+.bannerImage{
+    background-image: url("../../public/images/banner.png");
+    width: 100%;
+    background-position: left;
+}
+
+.bannerContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: inherit;
+    flex-direction: column;
+}
+
+.bannerTextContainer{
+    text-align: center;
+}
+
+.bannerDescriptionContainer{
+    text-align: center;
+    width: 70%;
+    color: white;
+}
+
+@media screen and (max-width: 800px) {
+    .bannerText {
+        color: white;
+        letter-spacing: .15em;
+    }
+}
+
+@media screen and (min-width: 800px){
+    .bannerText{
+        animation: typing 5s;
+        overflow: hidden;
+        color: white;
+        letter-spacing: .15em;
+        white-space: nowrap;
+    }
+    
+    @keyframes typing{
+        from{
+            width: 0px;
+        }
+        to{
+            width: 100%;
+        }
+    }
+}

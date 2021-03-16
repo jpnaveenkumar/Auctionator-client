@@ -1,0 +1,33 @@
+.headerContainer{
+    height: 50px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    top: 0px;
+}
+.header{
+    padding: 5px 20px 0px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: inherit;
+}
+.loginBtn{
+    border-radius: 3px;
+    border: 1px solid white;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    color: white;
+}
+.loginText{
+    color: white;
+    font-size: 14px;
+}
+.logoText{
+    font-size: 20px;
+    color: white;
+}
