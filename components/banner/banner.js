@@ -8,6 +8,12 @@ export default function Banner()
         setHeight(window.innerHeight);
     },[]);
 
+    function scrollToEvents()
+    {
+        document.querySelector("#productListingContainer")
+        .scrollIntoView({behaviour:'smooth'});
+    }
+
     return (
         <div className={styles.bannerImage} style={{height: screenHeight}}>
             <div className={styles.bannerContent}>
@@ -20,6 +26,9 @@ export default function Banner()
                          among auction listings across a variety of product categories.The Auction listings will 
                          be either an Upcoming auction or an Ongoing auction.
                     </p>
+                </div>
+                <div onClick={scrollToEvents} className={styles.bannerButton}>
+                    Participate
                 </div>
             </div>
         </div>

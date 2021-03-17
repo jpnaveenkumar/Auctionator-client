@@ -1,0 +1,29 @@
+.productListingContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 50px;
+    z-index: 1;
+}
+.productListingTitle{
+    border-bottom: 2px solid #023e8a;
+    padding-bottom: 3px;
+    width: 160px;
+    position: relative;
+    left: -30%;
+    color: #023e8a;
+    font-weight: 600;
+}
+.productListingCarousell{
+    margin-top: 50px;
+    width: 70%;
+    display: flex;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.productListingCarousell::-webkit-scrollbar{
+    display: none;
+}

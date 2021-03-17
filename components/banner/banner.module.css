@@ -22,6 +22,21 @@
     color: white;
 }
 
+.bannerButton{
+    padding: 15px 25px 15px 25px;
+    background-color: #023e8a;
+    color: white;
+    border-radius: 50px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: transform .5s;
+}
+
+.bannerButton:hover{
+    transform: scale(1.1);
+}
+
 @media screen and (max-width: 800px) {
     .bannerText {
         color: white;
