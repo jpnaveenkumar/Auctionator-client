@@ -5,19 +5,25 @@
     justify-content: center;
     padding-top: 50px;
     z-index: 1;
+    
+}
+.productListingWrapper{
+    width: 70%;
+}
+.productListingTitleContainer{
+    display: flex;
+    justify-content: space-between;
 }
 .productListingTitle{
     border-bottom: 2px solid #023e8a;
     padding-bottom: 3px;
     width: 160px;
-    position: relative;
-    left: -30%;
     color: #023e8a;
     font-weight: 600;
 }
 .productListingCarousell{
     margin-top: 50px;
-    width: 70%;
+    width: 100%;
     display: flex;
     overflow-x: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
@@ -26,4 +32,10 @@
 
 .productListingCarousell::-webkit-scrollbar{
     display: none;
+}
+
+.moreBtn{
+    color: #023e8a;
+    text-decoration: underline;
+    cursor: pointer;
 }
