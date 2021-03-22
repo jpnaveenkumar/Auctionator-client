@@ -62,7 +62,7 @@ export default function Home({category, upcoming, err, ongoing}) {
   );
 }
 
-export const getStaticProps = async () => {
+export const getServerSideProps = async () => {
   try{
       const result = await Promise.all([
         httpGet("/category/categories",{},{}),

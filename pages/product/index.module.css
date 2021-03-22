@@ -1,0 +1,54 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.holder{
+    width: 90%;
+    margin-top: 100px;
+}
+.productsContainer{
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.title{
+    color: #023e8a;
+    font-weight: 600;
+}
+.titleBox{
+    padding-right: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #023e8a;
+    width: fit-content;
+}
+.statusTabsContainer{
+    display: flex;
+    margin: 30px;
+}
+.statusTabs{
+    height: 40px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #023e8a;
+    font-size: 13px;
+    color: #012B61;
+    cursor: pointer;
+    user-select: none;
+}
+.noBorderLeft{
+    border-left: 0px;
+}
+.activeTab{
+    background-color: #C0CFE2;
+}
+.notFound{
+    height: 200px;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #012B61;
+}

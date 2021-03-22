@@ -11,10 +11,8 @@ export default function ProductCard({product, status, timerExpiryCallback})
             let timeLeft;
             if(status == "ongoing"){
                 timeLeft = getRemainingTime(new Date().toISOString(),product["endTime"]);
-                console.log("ongoing bidding");
             }else if(status == "upcoming"){
                 timeLeft = getRemainingTime(new Date().toISOString(),product["startTime"]);
-                console.log("upcoming bidding");
             }
             if(timeLeft == " 0 hr : 0 min : 0 sec"){
                 clearInterval(timer);

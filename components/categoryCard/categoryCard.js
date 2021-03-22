@@ -1,7 +1,16 @@
 import styles from './categoryCard.module.css';
+import {useRouter} from 'next/router';
 export default function CategoryCard({category}){
+
+    const router = useRouter();
+
+    function navigateToProductPage()
+    {
+        router.push(`/product?category=${category["categoryId"]}`);
+    }
+
     return (
-        <div className={styles.categoryCard}>
+        <div onClick={navigateToProductPage} className={styles.categoryCard}>
             <div>
                 <img height="100px" width="100px" src={category["categoryIconUrl"]}></img>
             </div>
