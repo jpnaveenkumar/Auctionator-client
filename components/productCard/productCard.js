@@ -1,10 +1,18 @@
 import styles from './productCard.module.css';
 import {useState, useEffect} from 'react';
+import {useRouter} from 'next/router';
 import {getRemainingTime} from '../../library/dateHelper';
 export default function ProductCard({product, status, timerExpiryCallback})
 {
 
+    const router = useRouter();
+
     const [timeLeft, updateTimeLeft] = useState(" ");
+
+    function navigateToProductDetailsPage()
+    {
+        router.push(`/product/${product["productId"]}`);
+    }
 
     useEffect(()=>{
         let timer = setInterval(() => {
@@ -25,7 +33,7 @@ export default function ProductCard({product, status, timerExpiryCallback})
     },[])
 
     return (
-        <div className={styles.productCard}>
+        <div onClick={navigateToProductDetailsPage} className={styles.productCard}>
             <div>
                 <img src={product["productImageUrl"]} height="200px" width="100%"></img>
             </div>

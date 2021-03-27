@@ -34,7 +34,7 @@ export default function Home({category, upcoming, err, ongoing}) {
 
   const handleOngoingEventsTimerExpiry = async () => {
     setTimeout(async () => {
-      const events = await httpGet("/product/all?pageNumber=0&pageSize=10&status=Ongoing",{},{});
+      const events = await httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Ongoing",{},{});
       updateOngoingBidding(events);
     }, 1000);
   }
@@ -42,8 +42,8 @@ export default function Home({category, upcoming, err, ongoing}) {
   const handleUpcomingEventsTimerExpiry = async () => {
     setTimeout(async () => {
       const result = await Promise.all([
-        httpGet("/product/all?pageNumber=0&pageSize=10&status=Upcoming",{},{}),
-        httpGet("/product/all?pageNumber=0&pageSize=10&status=Ongoing",{},{})
+        httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Upcoming",{},{}),
+        httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Ongoing",{},{})
       ]);
       updateOngoingBidding(result[1]);
       updateUpcomingBidding(result[0]);
@@ -66,8 +66,8 @@ export const getServerSideProps = async () => {
   try{
       const result = await Promise.all([
         httpGet("/category/categories",{},{}),
-        httpGet("/product/all?pageNumber=0&pageSize=10&status=Upcoming",{},{}),
-        httpGet("/product/all?pageNumber=0&pageSize=10&status=Ongoing",{},{})
+        httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Upcoming",{},{}),
+        httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Ongoing",{},{})
       ]);
       return {
           props : {
