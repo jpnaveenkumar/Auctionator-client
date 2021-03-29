@@ -1,0 +1,178 @@
+.productDetailsContainer{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.productDetailsBox{
+    width: 80%;
+    margin-top: 150px;
+}
+
+.row1, .row2, .row3{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.row2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.row3{
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.bidTextField{
+    margin: 5px;
+}
+
+.bidButtonField{
+    background-color: #03045e;
+    margin-left: 20px;
+}
+
+.imageContainer{
+
+}
+.productDescription{
+    min-width: 300px;
+    width: 45%0;
+}
+.productName{
+    font-weight: 600;
+    font-size: 20px;
+}
+.productStatus{
+    color: white;
+    padding: 7px;
+    margin-top: 15px;
+    width: fit-content;
+    font-weight: 600;
+    font-size: 14px;
+}
+.productPriceContainer{
+    display: grid;
+    grid-template-columns: auto auto;
+    margin-top: 30px;
+}
+
+.priceHeader{
+    padding: 5px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.priceValue{
+    padding: 5px;
+    font-size: 14px;
+}
+
+.aiValuationTool{
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    text-decoration: underline;
+    color: #023e8a;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.lhs{
+    color: #03045e;
+}
+
+.rhs{
+    color: #03045e;
+}
+
+.startTime{
+    display: flex;
+    margin: 5px;
+    font-size: 14px;
+    justify-content: space-between;
+}
+
+.timerContainer{
+    margin-top: 50px;
+}
+
+.timerBox{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    align-items: center;
+    padding: 10px;
+    color: white;
+    border-radius: 5px;
+}
+
+.timerText{
+    margin:5px;
+    font-size: 13px;
+}
+
+.timerTime{
+    font-weight: 600;
+}
+
+.userContainer{
+    flex: 1 0 45%;
+    display: flex;
+    justify-content: center;
+    margin: 50px 10px 10px 10px;
+}
+
+.productDetails{
+    flex: 1 0 45%;
+    min-width: 300px;
+    margin: 50px 10px 10px 10px;
+}
+
+.productDetailTile{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.productDetailTileTextLHS{
+    color: #635F5D;
+    font-size: 14px;
+}
+
+.productDetailTileTextRHS{
+    color: #635F5D;
+    font-weight: 600;
+    font-size: 14px;
+}
+.carousellContainer{
+    width: 100%;
+    margin-top: 50px;
+}
+
+.sellerContainer{
+    box-shadow: 0px 0px 5px 1px #8080806e;
+    padding: 10px 20px 20px 20px;
+}
+
+.sellerBox{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.sellerBoxItem{
+    flex: 1 0 45%;
+    margin: 3px;
+}
+
+.sellerInfo{
+    font-weight: 600;
+}

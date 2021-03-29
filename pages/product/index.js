@@ -7,7 +7,7 @@ import {useEffect, useState} from 'react';
 import {httpGet} from '../../library/httpRequest';
 export default function Product({products, pageType, category}){
     const router = useRouter();
-
+    console.log(products);
     const [activeTab, updateActiveTab] = useState("upcoming");
     const [productsByStatus, updateProductsByStatus] = useState([]);
     const [productsByCategoryOngoing, updateProductsByCategoryOngoing] = useState([]);
@@ -138,9 +138,10 @@ export const getServerSideProps = async (context) => {
         let url;
         let result;
         if('category' in query){
-            url = `/product/all?pageNumber=0&pageSize=100&status=Ongoing&categories=${query['category']}`;
+            url = `/product/all?pageNumber=0&pageSize=100&statuses=Ongoing,Upcoming&categories=${query['category']}`;
             pageType = 'category';
             result = await Promise.all([httpGet(url,{},{}), httpGet("/category/categories",{},{})]);
+            console.log(url);
             return {
                 props : {
                     products : result[0],
@@ -149,7 +150,7 @@ export const getServerSideProps = async (context) => {
                 }
             }
         }else if('status' in query){
-            url = `/product/all?pageNumber=0&pageSize=100&status=${query['status']}`;
+            url = `/product/all?pageNumber=0&pageSize=100&statuses=${query['status']}`;
             pageType = 'status';
             result = await Promise.all([httpGet(url,{},{})]);
             return {
