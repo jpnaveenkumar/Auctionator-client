@@ -7,6 +7,7 @@ import {useEffect, useState} from 'react';
 import {getRemainingTime} from '../../library/dateHelper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import { Client, Message } from '@stomp/stompjs';
 export default function ProductDetails({productInfo, err, upcoming, ongoing})
 {
 
@@ -69,7 +70,70 @@ export default function ProductDetails({productInfo, err, upcoming, ongoing})
         updateSellerInfo(sellerInfo);
     },[]);
 
-    console.log(productInfo);
+    useEffect( () => {
+        // var Stomp = require('stompjs');
+        // var destination = '/topic/auctionator';
+        // var client = Stomp.overWS('wss://b-000f8078-6ecc-4ff6-856f-1cfcefb36915-2.mq.ap-southeast-1.amazonaws.com:61619');
+        // var headers = {
+        //     login: 'auctionator',
+        //     passcode: 'auctionatoradmin'
+        //     };
+        // client.connect(headers, ()=>{
+        //     console.log("connected");
+        //     client.subscribe(destination, (message)=>{
+        //         console.log(message);
+        //     });
+        // }, (error)=> {
+        //     console.log(error);
+        // });
+        const client = new Client({
+            brokerURL: 'wss://b-000f8078-6ecc-4ff6-856f-1cfcefb36915-2.mq.ap-southeast-1.amazonaws.com:61619',
+            connectHeaders: {
+              login: 'auctionator',
+              passcode: 'auctionatoradmin',
+            },
+            debug: function (str) {
+              console.log(str);
+            },
+            reconnectDelay: 5000,
+            heartbeatIncoming: 4000,
+            heartbeatOutgoing: 4000,
+          });
+          var subscription;
+        client.onConnect = function (frame) {
+        // Do something, all subscribes must be done is this callback
+        // This is needed because this will be executed after a (re)connect
+            console.log("Connected...");
+                subscription = client.subscribe('/topic/auctionator', (message)=>{
+                console.log(message.body);
+            });
+        };
+        client.onStompError = function (frame) {
+            // Will be invoked in case of error encountered at Broker
+            // Bad login/passcode typically will cause an error
+            // Complaint brokers will set `message` header with a brief message. Body may contain details.
+            // Compliant brokers will terminate the connection after any error
+            console.log('Broker reported error: ' + frame.headers['message']);
+            console.log('Additional details: ' + frame.body);
+          };
+          
+          client.activate();
+        return function () { 
+            console.log("Terminating subscriptions....");
+            debugger;
+            client.deactivate();
+            subscription.unsubscribe();
+        }
+    },[]);
+
+    useEffect(async ()=>{
+
+        return ()=>{
+            console.log("unmounting...");
+        }
+    },[])
+
+    //console.log(productInfo);
     return (
         <div>
             <StickyHeader></StickyHeader>
