@@ -20,3 +20,26 @@ export function httpGet(apiURL, params, headers)
         });
     });
 }
+
+export function httpPost(apiURL,params) {
+    const requestURL = developmentServerURL + apiURL;
+    const headers = {
+        "Content-Type": "application/json",
+        'Accept': 'application/json'
+    }
+    return new Promise((resolve, reject) => {
+        axios.post(requestURL, 
+            params,
+            headers
+            ).then(function(response){
+            if(response.status == 201 || response.status == 200){
+                    resolve(response["data"]["data"]);
+            }else{
+                reject(response["data"]["message"])
+            }
+        }).catch(function(error){
+            console.log(error);
+            reject("Something went wrong");
+        });
+    });
+}
