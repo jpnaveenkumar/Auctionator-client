@@ -1,0 +1,9 @@
+.container{
+    padding: 50px;
+}
+.logoutBtn{
+    color:white;
+    background-color: red;
+    width: fit-content;
+    padding: 5px 10px 5px 10px;
+}

@@ -1,0 +1,59 @@
+.overlay{
+    width: 100vw;
+    background-color: #80808069;
+    position: absolute;
+    top: 0px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}   
+
+.modal{
+    background-color: white;
+    box-shadow: 0px 0px 1px 1px grey;
+    min-width: 40%;
+    position: relative;
+    height: fit-content;
+    top: 15%;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.tabs{
+    display: flex;
+}
+
+.tab{
+    flex: 1 0 50%;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.activeTab{
+    color: #023e8a;
+    border-bottom: 2px solid #023e8a;
+    font-weight: 600;
+}
+
+.disabledTab{
+    color: grey;
+}
+
+.tabContent{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.inputField{
+    margin: 20px 0px 0px 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.alert{
+    position: absolute;
+    top: 10px;
+}
