@@ -38,7 +38,7 @@
     color: #03045e;
 }
 
-.row2, .row3{
+.row2, .row3, .row5{
     display: flex;
     margin: 5px;
     justify-content: space-between;

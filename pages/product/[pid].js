@@ -8,7 +8,8 @@ import {getRemainingTime} from '../../library/dateHelper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Client, Message } from '@stomp/stompjs';
-export default function ProductDetails({productInfo, err, upcoming, ongoing})
+import { connect } from 'react-redux';
+function ProductDetails({productInfo, err, upcoming, ongoing, user})
 {
 
     function getProductStatus(items)
@@ -71,21 +72,6 @@ export default function ProductDetails({productInfo, err, upcoming, ongoing})
     },[]);
 
     useEffect( () => {
-        // var Stomp = require('stompjs');
-        // var destination = '/topic/auctionator';
-        // var client = Stomp.overWS('wss://b-000f8078-6ecc-4ff6-856f-1cfcefb36915-2.mq.ap-southeast-1.amazonaws.com:61619');
-        // var headers = {
-        //     login: 'auctionator',
-        //     passcode: 'auctionatoradmin'
-        //     };
-        // client.connect(headers, ()=>{
-        //     console.log("connected");
-        //     client.subscribe(destination, (message)=>{
-        //         console.log(message);
-        //     });
-        // }, (error)=> {
-        //     console.log(error);
-        // });
         const client = new Client({
             brokerURL: 'wss://b-000f8078-6ecc-4ff6-856f-1cfcefb36915-2.mq.ap-southeast-1.amazonaws.com:61619',
             connectHeaders: {
@@ -133,7 +119,6 @@ export default function ProductDetails({productInfo, err, upcoming, ongoing})
         }
     },[])
 
-    //console.log(productInfo);
     return (
         <div>
             <StickyHeader></StickyHeader>
@@ -148,13 +133,15 @@ export default function ProductDetails({productInfo, err, upcoming, ongoing})
                             <div className={styles.productStatus} style={{backgroundColor : productStatus == "upcoming" ?  '#1565c0' :  '#4caf50'}}>{productStatus.toUpperCase()}</div>
                             <div className={styles.productPriceContainer}>
                                 <div className={styles.priceHeader}>Base Price</div>
-                                <div className={styles.priceValue}>$56,000</div>
+                                <div className={styles.priceValue}>{`$ ${productInfo["productBasePrice"]}`}</div>
                                 <div className={styles.priceHeader}>Highest Bid Amount</div>
-                                <div className={styles.priceValue}>$56,000</div>
-                                <div className={styles.priceHeader}>Your Highest Bid Amount</div>
-                                <div className={styles.priceValue}>$56,000</div>
-                                <div className={styles.priceHeader}>AI Valutation tool Quote</div>
-                                <div className={styles.priceValue}>$56,000</div>
+                                <div className={styles.priceValue}>{`$ ${productInfo["maxBidAmountForThisProduct"]}`}</div>
+                                { user!=null && <div className={styles.priceHeader}>Your Highest Bid Amount</div>}
+                                { user!= null && <div className={styles.priceValue}>$56,000</div>}
+                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceHeader}>AI Valutation tool Quote</div>}
+                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceValue}>$56,000</div>}
+                                <div className={styles.priceHeader}>Number of Bids</div>
+                                <div className={styles.priceValue}>{productInfo["numberOfBids"]}</div>
                             </div>
                             <div className={styles.aiValuationTool}>
                                 AI Valuation tool
@@ -253,3 +240,9 @@ export const getServerSideProps = async (context) => {
     }
     
 }
+
+function mapStateToProps(state) {
+    return { user : state.user }
+}
+
+export default connect(mapStateToProps)(ProductDetails);

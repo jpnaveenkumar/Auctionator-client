@@ -33,4 +33,15 @@
 .logoText{
     font-size: 20px;
     color: #023e8a;
+    cursor: pointer;
+}
+
+.userProfileContainer{
+    display: flex;
+    cursor: pointer;
+}
+
+.userName{
+    color: #023e8a;
+    margin: 3px;
 }

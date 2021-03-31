@@ -42,6 +42,10 @@ export default function ProductCard({product, status, timerExpiryCallback})
                     <span className={styles.productTitle}>{product["productName"]}</span>
                     <span className={styles.basePrice}>$ {product["productBasePrice"]}</span>
                 </div>
+                <div className={styles.row5}>
+                    <span className={styles.lhs}>Number of Bids : </span>
+                    <span className={styles.rhs}>{product["numberOfBids"]}</span>
+                </div>
                 <div className={styles.row2}>
                     <span className={styles.lhs}>Start Time : </span>
                     <span className={styles.rhs}>{new Date(product["startTime"]).toLocaleString()}</span>

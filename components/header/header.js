@@ -4,6 +4,7 @@ import {useRouter} from 'next/router';
 import {useEffect, useState} from 'react';
 import UserAuthenticationModal from '../userAuthenticationModal/userAuthenticationModal';
 import { connect } from 'react-redux';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 function Header({user})
 {
     const router = useRouter();
@@ -18,6 +19,10 @@ function Header({user})
         document.body.style.overflow = "";
     }
 
+    function navigateToHome(){
+        router.push(`/`);
+    }
+
     function navigateToProfilePage(){
         router.push(`/user`);
     }
@@ -27,9 +32,12 @@ function Header({user})
         <div className={styles.headerContainer}>
             { showLoginModal && <UserAuthenticationModal onModalClose = {onModalClose}></UserAuthenticationModal>}
             <div className={styles.header}>
-                <span className={styles.logoText}>Auctionator</span>
+                <span onClick={navigateToHome} className={styles.logoText}>Auctionator</span>
                 { user != null ? 
-                    <span onClick={navigateToProfilePage}> {user != null ? user.name : ""}</span>
+                    <div onClick={navigateToProfilePage} className={styles.userProfileContainer}>
+                        <AccountCircleIcon style={{ color: 'white' }}></AccountCircleIcon>
+                        <div className={styles.userName}>{user != null ? user["userName"] : ""}</div>
+                    </div>
                     :
                     <div onClick={signupLogin} className={styles.loginBtn}>
                         <span className={styles.loginText}>Login</span>

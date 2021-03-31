@@ -20,6 +20,7 @@ function userAuthenticationModal({onModalClose, dispatch}){
     const [signupAddress, updateAddress] = useState("");
     const [signupPassword, updatePassword] = useState("");
     const [signupConfirmPassword, updateConfirmPassword] = useState("");
+    const [signupPhoneNumber, updatePhoneNumber] = useState("");
     
     const [loginEmailId, updateLoginEmailId] = useState("");
     const [loginPassword, updateLoginPassword] = useState("");
@@ -69,10 +70,7 @@ function userAuthenticationModal({onModalClose, dispatch}){
             showMessage("success", "Login Successful");
             dispatch({
                 "type" : "setUser",
-                "user" : {
-                    "name" : "naveen",
-                    "token" : response
-                },
+                "user" : response,
             });
             updateButtonLoading(false);
             onModalClose();
@@ -97,6 +95,10 @@ function userAuthenticationModal({onModalClose, dispatch}){
             showMessage("error", "Missing Password in the Signup form");
             return;
         }
+        if(!signupPhoneNumber){
+            showMessage("error", "Missing phone number in the Signup form");
+            return;
+        }
         if(!signupAddress){
             showMessage("error", "Missing Address in the Signup form");
             return;
@@ -109,7 +111,8 @@ function userAuthenticationModal({onModalClose, dispatch}){
             userName: signupUsername,
             userAddress: signupAddress,
             userEmail: signupEmailId,
-            userPassword: signupPassword
+            userPassword: signupPassword,
+            userPhoneNumber: signupPhoneNumber 
           }
           updateButtonLoading(true);
           httpPost("/user/signup",params).then((response) => {
@@ -156,6 +159,9 @@ function userAuthenticationModal({onModalClose, dispatch}){
                                     </div>
                                     <div className={styles.inputField}>
                                         <TextField onChange={(e) => updateAddress(e.target.value)} value={signupAddress} style ={{width: '90%'}} size="small" label="Address" variant="outlined" />
+                                    </div>
+                                    <div className={styles.inputField}>
+                                        <TextField onChange={(e) => updatePhoneNumber(e.target.value)} value={signupPhoneNumber} style ={{width: '90%'}} size="small" label="Phone Number" variant="outlined" />
                                     </div>
                                     <div className={styles.inputField}>
                                         <TextField onChange={(e) => updatePassword(e.target.value)} value={signupPassword} style ={{width: '90%'}} size="small" type="password" label="Password" variant="outlined" />
