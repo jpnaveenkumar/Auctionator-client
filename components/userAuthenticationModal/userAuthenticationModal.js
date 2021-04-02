@@ -74,11 +74,11 @@ function userAuthenticationModal({onModalClose, dispatch}){
             });
             updateButtonLoading(false);
             onModalClose();
-          }, (error) => {
+        }, (error) => {
             console.log(error);
             showMessage("error", "Invalid credentials. Please try again.");
             updateButtonLoading(false);
-          });
+        });
     }
 
     function userSignUp()

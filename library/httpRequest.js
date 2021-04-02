@@ -1,9 +1,10 @@
 const axios = require('axios');
-
+const mode = "prod";
 const developmentServerURL = "http://localhost:8080";
+const productionServerURL = "http://auctionator.us-east-1.elasticbeanstalk.com";
 export function httpGet(apiURL, params, headers)
 {
-    const requestURL = developmentServerURL + apiURL;
+    const requestURL = mode == "dev" ? developmentServerURL + apiURL : productionServerURL + apiURL;
     return new Promise((resolve, reject) => {
         axios.get(requestURL, {
             params,
@@ -22,7 +23,7 @@ export function httpGet(apiURL, params, headers)
 }
 
 export function httpPost(apiURL,params) {
-    const requestURL = developmentServerURL + apiURL;
+    const requestURL = mode == "dev" ? developmentServerURL + apiURL : productionServerURL + apiURL;
     const headers = {
         "Content-Type": "application/json",
         'Accept': 'application/json'

@@ -1,0 +1,45 @@
+.overlay{
+    width: 100vw;
+    background-color: #80808069;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+}   
+
+.modal{
+    background-color: white;
+    box-shadow: 0px 0px 1px 1px grey;
+    min-width: 40%;
+    position: relative;
+    height: fit-content;
+    top: 15%;
+    padding: 5px 30px 30px 30px;
+    border-radius: 3px;
+}
+
+.heading{
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px 10px;
+}
+
+.inputField{
+    margin: 20px 10px 0px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1 0 30%;
+}
+
+.inputHolder{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.numberOfOwners{
+    font-weight: 400;
+    color: grey;
+}
