@@ -19,6 +19,7 @@
     "bootstrap": "^4.6.0",
     "cross-env": "^7.0.3",
     "date-fns": "^2.19.0",
+    "material-ui-dropzone": "^3.5.0",
     "net": "^1.0.2",
     "next": "10.0.9",
     "next-redux-wrapper": "^6.0.2",
