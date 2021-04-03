@@ -14,6 +14,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import IconButton from '@material-ui/core/IconButton';
 import {httpPost} from '../../library/httpRequest';
 import { connect } from 'react-redux';
+import Alert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
         textField: { 
@@ -31,7 +32,11 @@ const useStyles = makeStyles((theme) => ({
             width: '120px',
             height: '45px',
             textTransform: 'none',
-            marginLeft: '20px'
+            marginLeft: '20px',
+            "&:hover": {
+                backgroundColor: '#023e8a'
+            }
+           
         }
       }));
       
@@ -49,15 +54,30 @@ function AddProduct({user}) {
     const [productName, updateProductName] = useState("");
     const [productBasePrice, updateProductBasePrice] = useState("");
     const [categoryId, updateCategoryId] = useState("");
-    const [startTime, updateStartTime] = useState("");
-    const [endTime, updateEndTime] = useState("");
+    const [startTime, updateStartTime] = useState(new Date().toISOString().substring(0,16));
+    const [endTime, updateEndTime] = useState(new Date().toISOString().substring(0,16));
     const [productObj, setProductObj] = useState({});
     const [productFeatures, updateProductFeatures] = useState([{}]);
+
+    const [showAlert, updateShowAlert] = useState(false);
+    const [alertMessage, updateAlertMessage] = useState("");
+    const [alertSeverity, updateAlertSeverity] = useState("warning");
+    const [isButtonLoading, updateButtonLoading] = useState(false);
+
 
     useEffect( async  ()=>{
         const categories = await httpGet(`/category/categories`,{},{});
         getCategories(categories);
     },[]);
+    
+    function showMessage(severity, message){
+        updateAlertMessage(message);
+        updateAlertSeverity(severity);
+        updateShowAlert(true);
+        setTimeout(()=>{
+            updateShowAlert(false);
+        },2000);
+    }
 
     function handleDialogOpen() {
         openNewDialog(true);
@@ -111,6 +131,24 @@ function AddProduct({user}) {
 
     function handleOnSubmit() {
 
+        if(!productName){
+            showMessage("error", "Missing Product Name in the form");
+            return;
+        }
+        if(!productBasePrice){
+            showMessage("error", "Missing Product Base Price in the form");
+            return;
+        }
+        if(!categoryId){
+            showMessage("error", "Missing Category Name in the form");
+            return;
+        }
+        if(uploadedImage.length == 0){
+            showMessage("error", "Missing Image Upload in the form");
+            return;
+        }
+        updateButtonLoading(true);
+    
         productFeatures.map((ele,i) => {
            productObj[ele.feature] = ele.description; 
         })
@@ -137,13 +175,17 @@ function AddProduct({user}) {
                     "Content-Type": "application/json",
                     'Accept': 'application/json'}
                 httpPost("/product",productData,setHeaders).then((response) => {
+                    updateButtonLoading(false);
                     console.log(response);
+                    showMessage("success", "Product Added successfully");
                 },
                 (error) => {
+                    updateButtonLoading(false);
                     console.log(error);
                 })
               }, (error) => {
-                console.log(error);
+                updateButtonLoading(false);
+                showMessage("error", "Image Upload failed. Please try again");
               });
     }
 
@@ -153,7 +195,12 @@ function AddProduct({user}) {
                 Add Product
         </div>
         <div className={styles.parentDiv}>
-
+                <div className={styles.alert}>
+                    { showAlert && <Alert severity={alertSeverity}>
+                        {/* <AlertTitle>Warning</AlertTitle> */}
+                        {alertMessage}
+                    </Alert>}
+                </div>
             <div className={styles.textField}>
                 <TextField onChange={(e) => updateProductName(e.target.value)} className={classes.textField} size="small" label="Product Name" variant="outlined" />
             </div>
@@ -181,7 +228,7 @@ function AddProduct({user}) {
                 id="datetime-local"
                 label="Starting Date and Time"
                 type="datetime-local"
-                defaultValue={new Date().toISOString().substring(0,16)}
+                defaultValue={startTime}
                 InputLabelProps={{
                 shrink: true,
                 }} />
@@ -193,7 +240,7 @@ function AddProduct({user}) {
                 id="datetime-local"
                 label="Ending Date and Time"
                 type="datetime-local"
-                defaultValue={new Date().toISOString().substring(0,16)}
+                defaultValue={endTime}
                 InputLabelProps={{
                 shrink: true,
                 }} />
@@ -203,9 +250,6 @@ function AddProduct({user}) {
                 <Button className={classes.upload} onClick={handleDialogOpen}>
                     Upload Image
                 </Button>
-                <div style ={{margin: '12px'}}>
-                    {imageName}
-                </div>
                 <DropzoneDialog
                         open={isDialogOpen}
                         onSave={handleSave}

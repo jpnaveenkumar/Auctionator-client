@@ -73,3 +73,9 @@
 .featureDescriptionChild {
     flex-basis: 54%;
 }
+
+.alert{
+    position: absolute;
+    top: 50px;
+    margin-left: 40%;
+}
