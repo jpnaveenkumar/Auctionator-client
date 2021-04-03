@@ -1,9 +1,10 @@
 import {useEffect, useState} from 'react';
 import styles from './banner.module.css';
+import ValuationTool from '../../components/valuationTool/valuationTool';
 export default function Banner()
 {
     const [screenHeight, setHeight] = useState(0);
-
+    const [showValuationToolModal, updateShowValuationToolModal] = useState(false);
     useEffect(()=>{
         setHeight(window.innerHeight);
     },[]);
@@ -14,8 +15,23 @@ export default function Banner()
         .scrollIntoView({behaviour:'smooth'});
     }
 
+    function openValuationToolModal()
+    {
+        updateShowValuationToolModal(true);
+        document.body.style.overflow = "hidden";
+    }
+
+    function onModalClose(){
+        updateShowValuationToolModal(false);
+        document.body.style.overflow = "";
+    }
+
     return (
         <div className={styles.bannerImage} style={{height: screenHeight}}>
+            {
+                showValuationToolModal &&
+                <ValuationTool onModalClose = {onModalClose}></ValuationTool>
+            }
             <div className={styles.bannerContent}>
                 <div className={styles.bannerTextContainer}>
                     <h1 className={styles.bannerText}>Auctionator The Auction Listing Platform</h1>
@@ -27,8 +43,13 @@ export default function Banner()
                          be either an Upcoming auction or an Ongoing auction.
                     </p>
                 </div>
-                <div onClick={scrollToEvents} className={styles.bannerButton}>
-                    Participate
+                <div className={styles.buttonContainer}>
+                    <div onClick={openValuationToolModal} className={styles.bannerButton}>
+                        AI Valuation Tool
+                    </div>
+                    <div onClick={scrollToEvents} className={styles.bannerButton}>
+                        Participate
+                    </div>
                 </div>
             </div>
         </div>

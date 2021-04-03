@@ -2,7 +2,6 @@ import styles from './userAuthenticationModal.module.css';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Alert from '@material-ui/lab/Alert';
-import AlertTitle from '@material-ui/lab/AlertTitle';
 import {useEffect, useState} from 'react';
 import {httpPost} from '../../library/httpRequest';
 import { connect } from 'react-redux';
@@ -133,7 +132,6 @@ function userAuthenticationModal({onModalClose, dispatch}){
             <div id="overlay" onClick={closeModal} className={styles.overlay} style={{height:overlayHeight}}>
                 <div className={styles.alert}>
                     { showAlert && <Alert severity={alertSeverity}>
-                        {/* <AlertTitle>Warning</AlertTitle> */}
                         {alertMessage}
                     </Alert>}
                 </div>
