@@ -1,0 +1,75 @@
+.parentDiv {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: space-between;
+    height: 150px;
+    margin-top: 40px;
+}
+
+.flexItem {
+    min-width: 50px;
+    margin-left: 10px;
+}
+
+.formControl {
+    min-width: 100px !important;
+}
+
+.addProductTitle {
+    border-bottom: 2px solid #023e8a;
+    padding-bottom: 3px;
+    width: 90px;
+    position: relative;
+    left: 2%;
+    color: #023e8a;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.addFeatureTitle {
+    padding-bottom: 3px;
+    width: 90px;
+    position: relative;
+    left: 2%;
+    color: #023e8a;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.textField {
+    flex-basis: 33.333333%;
+    flex-direction: column;
+    text-align: center;
+}
+
+.featureDescription {
+    margin-top: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    text-align: center;
+}
+
+.submit {
+    flex-basis: 35%;
+    margin-top: 90px;
+    text-align: end;
+}
+.dynamicFields {
+    display: flex;
+    flex-direction: column;
+    margin-left: 90px;
+}
+
+.iconButton {
+    flex-basis: 33.33%;
+    text-align: start;
+}
+
+.parentDynamicFieldDiv {
+    display: flex;
+}
+
+.featureDescriptionChild {
+    flex-basis: 54%;
+}

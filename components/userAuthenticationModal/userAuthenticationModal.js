@@ -113,8 +113,12 @@ function userAuthenticationModal({onModalClose, dispatch}){
             userPassword: signupPassword,
             userPhoneNumber: signupPhoneNumber 
           }
+          var headers = {
+            "Content-Type": "application/json",
+            'Accept': 'application/json'
+        }
           updateButtonLoading(true);
-          httpPost("/user/signup",params).then((response) => {
+          httpPost("/user/signup",params,headers).then((response) => {
             console.log(response);
             showMessage("success", "You have successfully registered. Please sign in to continue.");
             updateButtonLoading(false);

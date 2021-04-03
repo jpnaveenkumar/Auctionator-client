@@ -7,3 +7,21 @@
     width: fit-content;
     padding: 5px 10px 5px 10px;
 }
+
+.userDetails {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.user {
+    margin-top: 10px;
+    font-weight: 600;
+    color: #023e8a;
+    flex-basis: 10%;
+}
+
+.userImage {
+    flex-basis: 9%;
+}

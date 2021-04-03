@@ -22,12 +22,8 @@ export function httpGet(apiURL, params, headers)
     });
 }
 
-export function httpPost(apiURL,params) {
+export function httpPost(apiURL,params,headers) {
     const requestURL = mode == "dev" ? developmentServerURL + apiURL : productionServerURL + apiURL;
-    const headers = {
-        "Content-Type": "application/json",
-        'Accept': 'application/json'
-    }
     return new Promise((resolve, reject) => {
         axios.post(requestURL, 
             params,
