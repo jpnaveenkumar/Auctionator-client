@@ -1,0 +1,21 @@
+.productContainer{
+    margin-top: 75px;
+    margin-bottom: 75px;
+}
+
+.productBox{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.containerTitle{
+    margin-bottom: 50px;
+    color: #023e8a;
+    font-weight: 600;
+    border-bottom: 2.5px solid #023e8a;
+    padding-bottom: 2px;
+    padding-right: 10px;
+    width: fit-content;
+}
+
+

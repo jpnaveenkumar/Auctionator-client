@@ -17,7 +17,8 @@
 .addProductTitle {
     border-bottom: 2px solid #023e8a;
     padding-bottom: 3px;
-    width: 90px;
+    padding-right: 10px;
+    width: fit-content;
     position: relative;
     left: 2%;
     color: #023e8a;

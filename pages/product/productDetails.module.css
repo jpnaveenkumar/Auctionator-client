@@ -176,3 +176,14 @@
 .sellerInfo{
     font-weight: 600;
 }
+
+.bidContainer{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bidStatusMessage{
+    color: red;
+    margin-top: 20px;
+}

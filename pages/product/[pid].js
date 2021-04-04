@@ -37,6 +37,7 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         document.body.style.overflow = "";
     }
 
+    const [productMeta, updateProductMeta] = useState(productInfo);
     const [timeLeft, updateTimeLeft] = useState(" ");
     const [ongoingBidding, updateOngoingBidding] = useState(ongoing);
     const [upcomingBidding, updateUpcomingBidding] = useState(upcoming);
@@ -44,7 +45,7 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
     const [sellerInfo, updateSellerInfo] = useState(null);
     const [userMaxBix, updateUserMaxBid] = useState(null);
     const [bidAmount, updateBidAmount] = useState(0);
-    const [bidErrorMessage, updateBidErrorMessage] = useState("");
+    const [bidStatusMessage, updateBidStatusMessage] = useState("");
     const [showValuationToolModal, updateShowValuationToolModal] = useState(false);
 
     const handleOngoingEventsTimerExpiry = async () => {
@@ -100,44 +101,48 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         }
     },[user]);
 
-    function showBidErrorMessage(message)
+    function showBidStatusMessage(message, autoRemoval)
     {
-        updateBidErrorMessage(message);
-        setTimeout(()=>{
-            updateBidErrorMessage("");
-        },2000);
+        updateBidStatusMessage(message);
+        if(autoRemoval){
+            setTimeout(()=>{
+                updateBidStatusMessage("");
+            },5000);
+        }
     }
 
     const enterBid = () => {
         if(!bidAmount){
-            showBidErrorMessage("Bid Amount should be greater than the highest bid amount");
+            showBidStatusMessage("Bid Amount should be greater than the highest bid amount", true);
             return;
         }
-        else if(productInfo["maxBidAmountForThisProduct"]){
-            if(productInfo["maxBidAmountForThisProduct"] > bidAmount){
-                showBidErrorMessage("Bid Amount should be greater than the highest bid amount");
+        else if(productMeta["maxBidAmountForThisProduct"]){
+            if(productMeta["maxBidAmountForThisProduct"] > bidAmount){
+                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount", true);
                 return;
             }
-            if(productInfo["maxBidAmountForThisProduct"] + 5 > bidAmount){
-                showBidErrorMessage("Bid Amount should be greater than the highest bid amount by atleast 5 SGD");
+            if(productMeta["maxBidAmountForThisProduct"] + 5 > bidAmount){
+                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount by atleast 5 SGD", true);
                 return;
             }
         }
-        else if(productInfo["productBasePrice"] > bidAmount){
-            showBidErrorMessage("Bid Amount should be greater than the base price of the product");
+        else if(productMeta["productBasePrice"] > bidAmount){
+            showBidStatusMessage("*Bid Amount should be greater than the base price of the product", true);
             return;
         }
         let params = {
-            "productId": productInfo["productId"],
+            "productId": productMeta["productId"],
             "currentBidAmount": bidAmount,
             "userId": user["userId"]
         };
+        showBidStatusMessage("*Processing your Bid...", false);
         httpPost("/bid",params).then((response) => {
             console.log(response);
-            showBidErrorMessage("Bid Raised Successfully");
+            updateUserMaxBid(bidAmount);
+            showBidStatusMessage("Bid Raised Successfully!!", true);
         }, (error) => {
             console.log(error);
-            showBidErrorMessage("Raise Bid Failed");
+            showBidStatusMessage("Raise Bid Failed!!", true);
         });
     }
 
@@ -164,6 +169,9 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                     let subscription = client.subscribe(`/topic/${productInfo["productId"]}`, (message)=>{
                         console.log("bid info : ");
                         console.log(message.body);
+                        let body = JSON.parse(message.body);
+                        body["numberOfBids"] = parseInt(body["numberOfBids"]) + 1;
+                        updateProductMeta(body);
                 });
             };
             client.onStompError = function (frame) {
@@ -208,15 +216,15 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                             <div className={styles.productStatus} style={{backgroundColor : productStatus == "upcoming" ?  '#1565c0' :  '#4caf50'}}>{productStatus.toUpperCase()}</div>
                             <div className={styles.productPriceContainer}>
                                 <div className={styles.priceHeader}>Base Price</div>
-                                <div className={styles.priceValue}>{`$ ${productInfo["productBasePrice"]}`}</div>
+                                <div className={styles.priceValue}>{`$ ${productMeta["productBasePrice"]}`}</div>
                                 <div className={styles.priceHeader}>Highest Bid Amount</div>
-                                <div className={styles.priceValue}>{`$ ${productInfo["maxBidAmountForThisProduct"] ? productInfo["maxBidAmountForThisProduct"]  : '0'}`}</div>
+                                <div className={styles.priceValue}>{`$ ${productMeta["maxBidAmountForThisProduct"] ? productMeta["maxBidAmountForThisProduct"]  : '0'}`}</div>
                                 { user && userMaxBix && <div className={styles.priceHeader}>Your Highest Bid Amount</div>}
                                 { user && userMaxBix && <div className={styles.priceValue}>{`$ ${userMaxBix}`}</div>}
                                 { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceHeader}>AI Valutation tool Quote</div>}
                                 { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceValue}>$56,000</div>}
                                 <div className={styles.priceHeader}>Number of Bids</div>
-                                <div className={styles.priceValue}>{productInfo["numberOfBids"]}</div>
+                                <div className={styles.priceValue}>{productMeta["numberOfBids"]}</div>
                             </div>
                             <div onClick={openValuationToolModal} className={styles.aiValuationTool}>
                                 AI Valuation tool
@@ -268,15 +276,17 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                     </div>
                     {
                         productStatus == "ongoing" &&
-                        <div className={styles.row3}>
-                            <div className={styles.bidTextField}>
-                                <TextField value={bidAmount} onChange={(e) => updateBidAmount(e.target.value)} disabled={user==null} id="outlined-basic" label="Enter Bid Amount" variant="outlined" />
+                        <div className={styles.bidContainer}>
+                            <div className={styles.row3}>
+                                <div className={styles.bidTextField}>
+                                    <TextField value={bidAmount} onChange={(e) => updateBidAmount(e.target.value)} disabled={user==null} id="outlined-basic" label="Enter Bid Amount" variant="outlined" />
+                                </div>
+                                <div className={styles.bidButtonField}>
+                                    <Button onClick={enterBid} disabled={user==null} variant="contained" color="primary" style={{color: 'white'}}>BID</Button>
+                                </div>
                             </div>
-                            <div className={styles.bidButtonField}>
-                                <Button onClick={enterBid} disabled={user==null} variant="contained" color="primary" style={{color: 'white'}}>BID</Button>
-                            </div>
-                            <div>
-                                {bidErrorMessage}
+                            <div className={styles.bidStatusMessage}>
+                                {bidStatusMessage}
                             </div>
                         </div>
                     }

@@ -5,7 +5,14 @@
     color:white;
     background-color: red;
     width: fit-content;
-    padding: 5px 10px 5px 10px;
+    padding: 10px 20px 10px 20px;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px 0px #80808085;
+}
+
+.logoutBtnContainer{
+    margin-top: 30px;
 }
 
 .userDetails {

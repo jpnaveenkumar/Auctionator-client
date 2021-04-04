@@ -5,6 +5,7 @@ import StickyHeader from '../../components/stickyHeader/stickyHeader';
 import { store } from '../../store/store';
 import {useEffect, useState} from 'react';
 import AddProduct from '../../components/addProduct/addProduct';
+import UserProductListing from '../../components/userProductCarousell/userProductCarousell';
 
 function User({user, dispatch}){
 
@@ -42,22 +43,30 @@ function User({user, dispatch}){
                                <div className={styles.userItemLHS}> Name : </div> {user["userName"].toUpperCase()}
                             </div>
                             <div className={styles.userItem}>
-                                <div className={styles.userItemLHS}> Phone number: </div> {user["userPhonenumber"] ? user["userPhonenumber"] : '-'}
+                                <div className={styles.userItemLHS}> Phone number: </div> {user["userPhoneNumber"] ? user["userPhoneNumber"] : '-'}
                             </div>
                             <div className={styles.userItem}>
                                 <div className={styles.userItemLHS}> Email Id : </div>{user["userEmail"].toUpperCase()}
                             </div>
                             <div className={styles.userItem}>
                                 <div className={styles.userItemLHS}> Address: </div> {user["userAddress"].toUpperCase()}
-                            </div>   
+                            </div>
+                        </div>
+
+                        <div className={styles.logoutBtnContainer}>
+                            <div onClick={logOutUser} className={styles.logoutBtn}>
+                                Logout
+                            </div>
                         </div>
                     </div>
-                    
+
                     <div>
-                        <div>
                         <AddProduct />
-                        </div>
-                    </div> 
+                    </div>
+
+                    <div>
+                        <UserProductListing></UserProductListing>
+                    </div>
                 </div>
             </div>
         </div>
