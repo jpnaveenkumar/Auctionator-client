@@ -29,38 +29,37 @@ function User({user, dispatch}){
     return (
         <div>
             <StickyHeader></StickyHeader>
-            <div className={styles.userDetails}>
-                <div className={styles.userImage}>
-                    <img style={{width: '90px',height:'90px'}} src="/images/profile_pic.jpg"></img>
-                    {console.log('User object ' + user["userName"])}
-                </div>
+            <div className={styles.profileContainer}>
+                <div className={styles.profileBox}>
 
-                <div className={styles.user}>
-                    {/* <div>
-                        {user["userId"]}
-                    </div> */}
+                    <div className={styles.userDetails}>
+                        <div className={styles.userImage}>
+                            <img style={{width: '120px',height:'120px'}} src="/images/profile_pic.jpg"></img>
+                        </div>
 
-                    <div>
-                        {user["userName"]}
-                    </div>
-
-                    <div>
-                        {user["userEmail"]}
+                        <div className={styles.user}>
+                            <div className={styles.userItem}>
+                               <div className={styles.userItemLHS}> Name : </div> {user["userName"].toUpperCase()}
+                            </div>
+                            <div className={styles.userItem}>
+                                <div className={styles.userItemLHS}> Phone number: </div> {user["userPhonenumber"] ? user["userPhonenumber"] : '-'}
+                            </div>
+                            <div className={styles.userItem}>
+                                <div className={styles.userItemLHS}> Email Id : </div>{user["userEmail"].toUpperCase()}
+                            </div>
+                            <div className={styles.userItem}>
+                                <div className={styles.userItemLHS}> Address: </div> {user["userAddress"].toUpperCase()}
+                            </div>   
+                        </div>
                     </div>
                     
                     <div>
-                        {user["userAddress"]}
-                    </div>   
+                        <div>
+                        <AddProduct />
+                        </div>
+                    </div> 
                 </div>
             </div>
-            
-            <div>
-                <div>
-                   <AddProduct />
-                </div>
-                
-            </div>
-            
         </div>
     );
 }

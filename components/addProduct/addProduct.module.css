@@ -1,8 +1,7 @@
 .parentDiv {
     display: flex;
     flex-wrap: wrap;
-    align-content: space-between;
-    height: 150px;
+    justify-content: center;
     margin-top: 40px;
 }
 
@@ -37,9 +36,10 @@
 }
 
 .textField {
-    flex-basis: 33.333333%;
+    flex: 1 0 48%;
     flex-direction: column;
     text-align: center;
+    margin: 20px 0px 10px 0px;
 }
 
 .featureDescription {
@@ -50,11 +50,17 @@
     text-align: center;
 }
 
-.submit {
-    flex-basis: 35%;
-    margin-top: 90px;
-    text-align: end;
+.dynamicFieldsContainer{
+    margin-top: 20px;
+
 }
+
+.submitContainer {
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+}
+
 .dynamicFields {
     display: flex;
     flex-direction: column;

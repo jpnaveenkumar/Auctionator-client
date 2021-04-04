@@ -28,7 +28,7 @@ export default function ProductsCarousell({products, title, status, timerExpiryC
                 <div className={styles.productListingCarousell}>
                     {
                         products.map(product => {
-                            return <ProductCard timerExpiryCallback={timerExpiryCallback} status={status} key={product["productName"]} product={product}></ProductCard>;
+                            return <ProductCard timerExpiryCallback={timerExpiryCallback} status={status} key={product["productId"]} product={product}></ProductCard>;
                         })
                     }
                 </div>

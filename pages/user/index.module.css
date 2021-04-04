@@ -10,9 +10,22 @@
 
 .userDetails {
     display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
     justify-content: center;
+    align-items: center;
     margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.userItem{
+    margin:10px;
+    display: flex;
+}
+
+.userItemLHS{
+    font-weight: 300;
+    width: 150px;
 }
 
 .user {
@@ -24,4 +37,15 @@
 
 .userImage {
     flex-basis: 9%;
+}
+
+.profileContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.profileBox{
+    width: 80%;
 }

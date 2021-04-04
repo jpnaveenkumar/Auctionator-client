@@ -94,7 +94,7 @@ export default function Product({products, pageType, category}){
                             {   
                                 datasource.length > 0 ?
                                 datasource.map(product => {
-                                    return <ProductCard timerExpiryCallback={productsByCategoryTimerExpiryCallBack} status={product["status"]} key={product["productName"]} product={product}></ProductCard>;
+                                    return <ProductCard timerExpiryCallback={productsByCategoryTimerExpiryCallBack} status={product["status"]} key={product["productId"]} product={product}></ProductCard>;
                                 }) :
                                 <div className={styles.notFound}>No Products Found</div>
                             }
@@ -118,7 +118,7 @@ export default function Product({products, pageType, category}){
                         {
                             productsByStatus.length > 0 ?
                             productsByStatus.map(product => {
-                                return <ProductCard timerExpiryCallback={productsByStatusTimerExpiryCallBack} status={product["status"]} key={product["productName"]} product={product}></ProductCard>;
+                                return <ProductCard timerExpiryCallback={productsByStatusTimerExpiryCallBack} status={product["status"]} key={product["productId"]} product={product}></ProductCard>;
                             }) : 
                             <div className={styles.notFound}>No Products Found</div>
                         }

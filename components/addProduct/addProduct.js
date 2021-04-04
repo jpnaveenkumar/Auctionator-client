@@ -37,6 +37,18 @@ const useStyles = makeStyles((theme) => ({
                 backgroundColor: '#023e8a'
             }
            
+        },
+        uploadBtn: {
+            color: '#023e8a',
+            backgroundColor: 'white',
+            borderRadius: '5px',
+            border: '1px solid #023e8a',
+            width: '200px',
+            height: '45px',
+            "&:hover": {
+                backgroundColor: '#023e8a',
+                color: 'white',
+            }
         }
       }));
       
@@ -168,7 +180,7 @@ function AddProduct({user}) {
                     startTime: startTime,
                     endTime: endTime,
                     numberOfBids: 0,
-                    productImageURL: imageURL,
+                    productImageUrl: imageURL,
                     productDetails: productObj
                 }
                 var setHeaders = {
@@ -204,24 +216,7 @@ function AddProduct({user}) {
             <div className={styles.textField}>
                 <TextField onChange={(e) => updateProductName(e.target.value)} className={classes.textField} size="small" label="Product Name" variant="outlined" />
             </div>
-            
-            <div className={styles.textField}>
-                <TextField onChange={(e) => updateProductBasePrice(e.target.value)} className={classes.textField} size="small" label="Base Price" variant="outlined" />
-            </div>
-            
-            <div className={styles.textField}>
-                <FormControl variant="outlined" size="small" className={classes.formControl}>
-                    <InputLabel>Category</InputLabel>
-                    <Select label="Category" onChange={(e) => updateCategoryId(e.target.value)}>
-                    {category.map((category) => 
-                        <MenuItem key={category.categoryId} value={category.categoryId}>
-                            {category.categoryName}
-                        </MenuItem>
-                    )}    
-                    </Select>
-                </FormControl>
-            </div>
-    
+
             <div className={styles.textField}>
                 <TextField className={classes.textField}
                 onChange={(e) => updateStartTime(e.target.value)}
@@ -235,6 +230,10 @@ function AddProduct({user}) {
             </div>
             
             <div className={styles.textField}>
+                <TextField onChange={(e) => updateProductBasePrice(e.target.value)} className={classes.textField} size="small" label="Base Price" variant="outlined" />
+            </div>
+
+            <div className={styles.textField}>
                 <TextField className={classes.textField}
                 onChange={(e) => updateEndTime(e.target.value)}
                 id="datetime-local"
@@ -247,7 +246,20 @@ function AddProduct({user}) {
             </div>
             
             <div className={styles.textField}>
-                <Button className={classes.upload} onClick={handleDialogOpen}>
+                <FormControl variant="outlined" size="small" className={classes.formControl}>
+                    <InputLabel>Category</InputLabel>
+                    <Select style={{minWidth: 200}} label="Category" onChange={(e) => updateCategoryId(e.target.value)}>
+                    {category.map((category) => 
+                        <MenuItem key={category.categoryId} value={category.categoryId}>
+                            {category.categoryName}
+                        </MenuItem>
+                    )}    
+                    </Select>
+                </FormControl>
+            </div>
+            
+            <div className={styles.textField}>
+                <Button className={classes.uploadBtn} onClick={handleDialogOpen}>
                     Upload Image
                 </Button>
                 <DropzoneDialog
@@ -259,20 +271,17 @@ function AddProduct({user}) {
                         onClose={handleDialogClose}
                 />
             </div>  
-        </div>
-        <div className={styles.featureDescription}>
-            <div className={styles.featureDescriptionChild}>
-                <div className={styles.dynamicFields}>
-                    {createDynamicFields()}
-                </div>
-            </div>
-            
-                
 
+            <div className={styles.dynamicFieldsContainer}>
+                {createDynamicFields()}
+            </div>
+        </div>
+
+        <div className={styles.submitContainer}>
             <div className={styles.submit} onClick={handleOnSubmit}>
                 <Button className={classes.upload}>Submit</Button>
             </div>    
-         </div> 
+        </div>
         </>
     )
 }
