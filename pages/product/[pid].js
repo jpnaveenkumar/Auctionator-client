@@ -11,6 +11,10 @@ import { Client, Message } from '@stomp/stompjs';
 import { connect } from 'react-redux';
 import {httpPost} from '../../library/httpRequest';
 import ValuationTool from '../../components/valuationTool/valuationTool';
+import Alert from '@material-ui/lab/Alert';
+import { InputAdornment } from '@material-ui/core';
+import AttachMoney from '@material-ui/icons/AttachMoney';
+const axios = require('axios');
 function ProductDetails({productInfo, err, upcoming, ongoing, user})
 {
 
@@ -37,6 +41,11 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         document.body.style.overflow = "";
     }
 
+    const [alertMeta, updateAlertMeta] = useState({
+        show : false,
+        severity : undefined,
+        message : undefined
+    });
     const [productMeta, updateProductMeta] = useState(productInfo);
     const [timeLeft, updateTimeLeft] = useState(" ");
     const [ongoingBidding, updateOngoingBidding] = useState(ongoing);
@@ -47,6 +56,7 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
     const [bidAmount, updateBidAmount] = useState(0);
     const [bidStatusMessage, updateBidStatusMessage] = useState("");
     const [showValuationToolModal, updateShowValuationToolModal] = useState(false);
+    const [valuationToolPrediction, updateValuationToolPredictionValue] = useState(undefined);
 
     const handleOngoingEventsTimerExpiry = async () => {
         setTimeout(async () => {
@@ -58,8 +68,8 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
     const handleUpcomingEventsTimerExpiry = async () => {
         setTimeout(async () => {
             const result = await Promise.all([
-            httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Upcoming",{},{}),
-            httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Ongoing",{},{})
+                httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Upcoming",{},{}),
+                httpGet("/product/all?pageNumber=0&pageSize=10&statuses=Ongoing",{},{})
             ]);
             updateOngoingBidding(result[1]);
             updateUpcomingBidding(result[0]);
@@ -101,33 +111,44 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         }
     },[user]);
 
-    function showBidStatusMessage(message, autoRemoval)
+    function showBidStatusMessage(message, autoRemoval, severity)
     {
-        updateBidStatusMessage(message);
+        
+        updateAlertMeta({
+            show : true,
+            severity,
+            message
+        });
         if(autoRemoval){
             setTimeout(()=>{
-                updateBidStatusMessage("");
+                updateAlertMeta({
+                    show : false,
+                });     
             },5000);
         }
     }
 
     const enterBid = () => {
         if(!bidAmount){
-            showBidStatusMessage("Bid Amount should be greater than the highest bid amount", true);
+            showBidStatusMessage("Bid Amount should be greater than the highest bid amount", true, 'error');
+            return;
+        }
+        if(!(!isNaN(parseFloat(bidAmount)) && isFinite(bidAmount) && bidAmount > 0)){
+            showBidStatusMessage("Enter valid Bit Amount", true, 'error');
             return;
         }
         else if(productMeta["maxBidAmountForThisProduct"]){
             if(productMeta["maxBidAmountForThisProduct"] > bidAmount){
-                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount", true);
+                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount", true, 'error');
                 return;
             }
             if(productMeta["maxBidAmountForThisProduct"] + 5 > bidAmount){
-                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount by atleast 5 SGD", true);
+                showBidStatusMessage("*Bid Amount should be greater than the highest bid amount by atleast 5 SGD", true, 'error');
                 return;
             }
         }
         else if(productMeta["productBasePrice"] > bidAmount){
-            showBidStatusMessage("*Bid Amount should be greater than the base price of the product", true);
+            showBidStatusMessage("*Bid Amount should be greater than the base price of the product", true, 'error');
             return;
         }
         let params = {
@@ -139,10 +160,10 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         httpPost("/bid",params).then((response) => {
             console.log(response);
             updateUserMaxBid(bidAmount);
-            showBidStatusMessage("Bid Raised Successfully!!", true);
+            showBidStatusMessage("Bid Raised Successfully!!", true, 'success');
         }, (error) => {
             console.log(error);
-            showBidStatusMessage("Raise Bid Failed!!", true);
+            showBidStatusMessage("Raise Bid Failed!!", 'error');
         });
     }
 
@@ -150,10 +171,10 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
 
         if(productStatus == "ongoing"){
             const client = new Client({
-                brokerURL: 'wss://b-000f8078-6ecc-4ff6-856f-1cfcefb36915-1.mq.ap-southeast-1.amazonaws.com:61619',
+                brokerURL: 'wss://b-2873c62a-2d42-4ff1-b65a-7d7afc85175f-1.mq.ap-southeast-1.amazonaws.com:61619',
                 connectHeaders: {
-                login: 'auctionator',
-                passcode: 'auctionatoradmin',
+                login: 'ucarsMQ',
+                passcode: 'ucarsPasswordMQ',
                 },
                 debug: function (str) {
                 console.log(str);
@@ -191,6 +212,37 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
         }
     },[productStatus]);
 
+    useEffect( async ()=> {
+        if(productInfo["categoryId"] == "ff8080817871d14e017871d362460003")
+        {
+            let regDate = productInfo["productDetails"]["regDate"] || productInfo["productDetails"]["Registration Date"];
+            let noOfOwners = productInfo["productDetails"]["noOfOwners"] || productInfo["productDetails"]["No Of Owners"];
+            let carModelName = productInfo["productDetails"]["model"] || productInfo["productDetails"]["Car Model"];
+            if(regDate && noOfOwners && carModelName){
+                try{
+                    let params = {
+                        "regDate" : new Date(regDate).toISOString().split("T")[0].split("-")[0],
+                        "owners" : noOfOwners,
+                        "model" : carModelName
+                    }
+                    axios.get("http://auctionatorml-env.eba-52pa63pi.us-east-1.elasticbeanstalk.com/api/v1/carvaluation", {
+                    params
+                    }).then(function(response){
+                        if(response.status == 200){
+                            let predictionResults = response["data"]["data"];
+                            console.log(predictionResults);
+                            if(parseFloat(predictionResults["accuracy"]) > 0.4){
+                                updateValuationToolPredictionValue( parseInt(predictionResults["price"] ))
+                            }
+                        }
+                    });
+                }catch(err){
+
+                }
+            }
+        }
+    }, []);
+
     useEffect(async ()=>{
 
         return ()=>{
@@ -199,13 +251,18 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
     },[])
 
     return (
-        <div>
+        <div >
             {
                 showValuationToolModal && 
                 <ValuationTool onModalClose = {onModalClose}></ValuationTool>
             }
             <StickyHeader></StickyHeader>
             <div className={styles.productDetailsContainer}>
+                <div className={styles.alert}>
+                    { alertMeta.show && <Alert severity={alertMeta.severity}>
+                        {alertMeta.message}
+                    </Alert>}
+                </div>
                 <div className={styles.productDetailsBox}>
                     <div className={styles.row1}>
                         <div className={styles.imageContainer}>
@@ -221,14 +278,14 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                                 <div className={styles.priceValue}>{`$ ${productMeta["maxBidAmountForThisProduct"] ? productMeta["maxBidAmountForThisProduct"]  : '0'}`}</div>
                                 { user && userMaxBix && <div className={styles.priceHeader}>Your Highest Bid Amount</div>}
                                 { user && userMaxBix && <div className={styles.priceValue}>{`$ ${userMaxBix}`}</div>}
-                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceHeader}>AI Valutation tool Quote</div>}
-                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div className={styles.priceValue}>$56,000</div>}
+                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && valuationToolPrediction && <div className={styles.priceHeader}>AI Valutation tool Quote</div>}
+                                { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && valuationToolPrediction && <div className={styles.priceValue}>{ ` $${valuationToolPrediction}`}</div>}
                                 <div className={styles.priceHeader}>Number of Bids</div>
                                 <div className={styles.priceValue}>{productMeta["numberOfBids"]}</div>
                             </div>
-                            <div onClick={openValuationToolModal} className={styles.aiValuationTool}>
+                            { productInfo["categoryId"] == "ff8080817871d14e017871d362460003" && <div onClick={openValuationToolModal} className={styles.aiValuationTool}>
                                 AI Valuation tool
-                            </div>
+                            </div>}
                             <div className={styles.timerContainer}>
                                 <div className={styles.startTime}>
                                     <span className={styles.lhs}>Start Time : </span>
@@ -279,7 +336,14 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                         <div className={styles.bidContainer}>
                             <div className={styles.row3}>
                                 <div className={styles.bidTextField}>
-                                    <TextField value={bidAmount} onChange={(e) => updateBidAmount(e.target.value)} disabled={user==null} id="outlined-basic" label="Enter Bid Amount" variant="outlined" />
+                                    <TextField value={bidAmount} onChange={(e) => updateBidAmount(e.target.value)} disabled={user==null} id="outlined-basic" label="Enter Bid Amount" variant="outlined" 
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <AttachMoney style={{ fontSize: 20, color: 'grey' }} />
+                                            </InputAdornment>
+                                        ),
+                                    }} />
                                 </div>
                                 <div className={styles.bidButtonField}>
                                     <Button onClick={enterBid} disabled={user==null} variant="contained" color="primary" style={{color: 'white'}}>BID</Button>

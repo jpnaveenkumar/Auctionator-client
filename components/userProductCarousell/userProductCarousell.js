@@ -5,9 +5,13 @@ import UserProductCard from '../userProductCard/userProductCard';
 import styles from '../userProductCarousell/userProductCarousell.module.css';
 function UserProductListing({user})
 {
+
+    const [isFetching, updateIsFetching] = useState(true);
+
     useEffect(async () => {
         let url = `/user/${user["userId"]}/products`;
         let result = await httpGet(url, {}, {});
+        updateIsFetching(false);
         updateProductListings(result);
         console.log(url);
     }, []);
@@ -21,9 +25,14 @@ function UserProductListing({user})
             </div>
             <div className={styles.productBox}>
                 {
-                    productListings.map(product => {
-                        return <UserProductCard key={product["productId"]} product={product} ></UserProductCard>
-                    })
+                    productListings.length > 0 ?
+                        productListings.map(product => {
+                            return <UserProductCard key={product["productId"]} product={product} ></UserProductCard>
+                        })
+                    :
+                    <div className={styles.productLoading}>
+                        {isFetching ? "Fetching User Products..." : "No Products Added..."}
+                    </div>
                 }
             </div>
         </div>

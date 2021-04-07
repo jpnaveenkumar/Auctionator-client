@@ -1,0 +1,58 @@
+.overlay{
+    width: 100vw;
+    height: 100vh;
+    background-color: #80808069;
+    position: fixed;
+    top: 0px;
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    left: 0px;
+}   
+
+.modal{
+    background-color: white;
+    box-shadow: 0px 0px 1px 1px grey;
+    min-width: 40%;
+    position: relative;
+    height: fit-content;
+    top: 15%;
+    padding: 5px 30px 30px 30px;
+    border-radius: 3px;
+}
+
+.heading{
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0px 10px;
+}
+
+.resultRow{
+    display: grid;
+    grid-template-columns: 70px 300px 100px;
+    margin: 10px;
+    color: grey;
+}
+
+.divider{
+    width: 100%;
+    background-color: #8080804d;
+    height: 1px;
+}
+
+.resultHeader{
+    font-weight: 600;
+    border-bottom: 1px solid #8080804d;
+    padding-bottom: 10px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.loading{
+    display: flex;
+    height: 100px;
+    justify-content: center; 
+    align-items: center;  
+    color: grey;
+}

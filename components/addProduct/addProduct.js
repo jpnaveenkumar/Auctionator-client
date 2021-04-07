@@ -15,11 +15,14 @@ import IconButton from '@material-ui/core/IconButton';
 import {httpPost} from '../../library/httpRequest';
 import { connect } from 'react-redux';
 import Alert from '@material-ui/lab/Alert';
+import { InputAdornment } from '@material-ui/core';
+import AttachMoney from '@material-ui/icons/AttachMoney';
 
 const useStyles = makeStyles((theme) => ({
         textField: { 
             flexDirection: 'column',
-            marginLeft: '20px'
+            marginLeft: '20px',
+            width: '220px',
         },
         formControl: {
             minWidth: 120,
@@ -99,7 +102,7 @@ function AddProduct({user}) {
     }
     function handleSave(files) {
         console.log(files);
-        setImageName(files[0].name + ' uploaded');
+        setImageName(files[0].name + ' ready to upload');
         openNewDialog(false);
         setUploadedImage(files[0]);
     }
@@ -141,6 +144,18 @@ function AddProduct({user}) {
           ))
     }
 
+    function clearForm()
+    {
+        updateProductName("");
+        updateProductBasePrice("");
+        updateCategoryId("");   
+        updateStartTime(new Date().toISOString().substring(0,16));
+        updateEndTime(new Date().toISOString().substring(0,16));
+        setImageName("");
+        setUploadedImage([]);
+        updateProductFeatures([{}]);
+    }
+
     function handleOnSubmit() {
 
         if(!productName){
@@ -149,6 +164,10 @@ function AddProduct({user}) {
         }
         if(!productBasePrice){
             showMessage("error", "Missing Product Base Price in the form");
+            return;
+        }
+        if(!(!isNaN(parseFloat(productBasePrice)) && isFinite(productBasePrice) && productBasePrice > 0)){
+            showMessage("error", "Enter valid Product Base Price");
             return;
         }
         if(!categoryId){
@@ -160,7 +179,6 @@ function AddProduct({user}) {
             return;
         }
         updateButtonLoading(true);
-    
         productFeatures.map((ele,i) => {
            productObj[ele.feature] = ele.description; 
         })
@@ -169,6 +187,7 @@ function AddProduct({user}) {
         var headers = {
             "Content-Type": "multipart/form-data"
         }
+        showMessage("info", "Uploading Image Inprogress...");
             httpPost("/uploadImage",bodyFormData,headers).then((response) => {
                 console.log(response);
                 var imageURL = response.imageURL;
@@ -186,13 +205,18 @@ function AddProduct({user}) {
                 var setHeaders = {
                     "Content-Type": "application/json",
                     'Accept': 'application/json'}
+                    showMessage("info", "Uploading Product Details Inprogress...");
                 httpPost("/product",productData,setHeaders).then((response) => {
+                    setTimeout(()=>{
+                        showMessage("success", "Product Added successfully");
+                    }, 1000);
                     updateButtonLoading(false);
+                    clearForm();
                     console.log(response);
-                    showMessage("success", "Product Added successfully");
                 },
                 (error) => {
                     updateButtonLoading(false);
+                    showMessage("error", "Failed to add product");
                     console.log(error);
                 })
               }, (error) => {
@@ -209,16 +233,16 @@ function AddProduct({user}) {
         <div className={styles.parentDiv}>
                 <div className={styles.alert}>
                     { showAlert && <Alert severity={alertSeverity}>
-                        {/* <AlertTitle>Warning</AlertTitle> */}
                         {alertMessage}
                     </Alert>}
                 </div>
             <div className={styles.textField}>
-                <TextField onChange={(e) => updateProductName(e.target.value)} className={classes.textField} size="small" label="Product Name" variant="outlined" />
+                <TextField value={productName} onChange={(e) => updateProductName(e.target.value)} className={classes.textField} size="small" label="Product Name" variant="outlined" />
             </div>
 
             <div className={styles.textField}>
                 <TextField className={classes.textField}
+                value = {startTime}
                 onChange={(e) => updateStartTime(e.target.value)}
                 id="datetime-local"
                 label="Starting Date and Time"
@@ -230,11 +254,20 @@ function AddProduct({user}) {
             </div>
             
             <div className={styles.textField}>
-                <TextField onChange={(e) => updateProductBasePrice(e.target.value)} className={classes.textField} size="small" label="Base Price" variant="outlined" />
+                <TextField  InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <AttachMoney style={{ fontSize: 20, color: 'grey' }} />
+                        </InputAdornment>
+                    ),
+                    }} 
+                    value = {productBasePrice}
+                onChange={(e) => updateProductBasePrice(e.target.value)} className={classes.textField} size="small" label="Base Price" variant="outlined" />
             </div>
 
             <div className={styles.textField}>
                 <TextField className={classes.textField}
+                value = {endTime}
                 onChange={(e) => updateEndTime(e.target.value)}
                 id="datetime-local"
                 label="Ending Date and Time"
@@ -248,7 +281,7 @@ function AddProduct({user}) {
             <div className={styles.textField}>
                 <FormControl variant="outlined" size="small" className={classes.formControl}>
                     <InputLabel>Category</InputLabel>
-                    <Select style={{minWidth: 200}} label="Category" onChange={(e) => updateCategoryId(e.target.value)}>
+                    <Select style={{minWidth: 200}} label="Category" value={categoryId} onChange={(e) => updateCategoryId(e.target.value)}>
                     {category.map((category) => 
                         <MenuItem key={category.categoryId} value={category.categoryId}>
                             {category.categoryName}
@@ -262,6 +295,7 @@ function AddProduct({user}) {
                 <Button className={classes.uploadBtn} onClick={handleDialogOpen}>
                     Upload Image
                 </Button>
+                <div className={styles.imageName}>{imageName}</div>
                 <DropzoneDialog
                         open={isDialogOpen}
                         onSave={handleSave}
@@ -279,7 +313,7 @@ function AddProduct({user}) {
 
         <div className={styles.submitContainer}>
             <div className={styles.submit} onClick={handleOnSubmit}>
-                <Button className={classes.upload}>Submit</Button>
+                <Button disabled={isButtonLoading} className={classes.upload}>Submit</Button>
             </div>    
         </div>
         </>

@@ -1,6 +1,7 @@
 import styles from './userProductCard.module.css';
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
+import ViewResult from '../../components/viewResult/viewResult';
 export default function userProductCard({product})
 {
     const router = useRouter();
@@ -25,14 +26,14 @@ export default function userProductCard({product})
     {
         if( status == "ongoing"){
             return (
-            <div className={styles.viewResults}>
+            <div onClick={openViewResultsModal} className={styles.viewResults}>
                 View Status
             </div>);
         }else if( status == "upcoming"){
             return <div></div>;
         }else{
             return (
-            <div className={styles.viewResults}>
+            <div onClick={openViewResultsModal} className={styles.viewResults}>
                 View Results
             </div>);
         }
@@ -53,8 +54,26 @@ export default function userProductCard({product})
     }
 
     const [status, updateProductStatus] = useState(getProductStatus(product));
+    const [showViewResults, updateShowViewResults] = useState(false);
+    const [productIdForViewResults, updateProductIdForViewResults] = useState(product["productId"]);
+
+    function openViewResultsModal()
+    {
+        updateShowViewResults(true);
+        document.body.style.overflow = "hidden";
+    }
+
+    function onModalClose(){
+        updateShowViewResults(false);
+        document.body.style.overflow = "";
+    }
 
     return (
+        <div>
+            {
+                showViewResults &&
+                <ViewResult productId = {productIdForViewResults} onModalClose = {onModalClose}></ViewResult>
+            }
         <div className={styles.productCard}>
             <div onClick={navigateToProductDetailsPage}>
                 <img src={product["productImageUrl"]} height="200px" width="100%"></img>
@@ -85,6 +104,7 @@ export default function userProductCard({product})
                     </div>
                 </div>                
             </div>
+        </div>
         </div>
     );
 }

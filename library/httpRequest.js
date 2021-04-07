@@ -1,5 +1,5 @@
 const axios = require('axios');
-const mode = "dev";
+const mode = "prod";
 const developmentServerURL = "http://localhost:8080";
 const productionServerURL = "http://auctionator.us-east-1.elasticbeanstalk.com";
 export function httpGet(apiURL, params, headers)

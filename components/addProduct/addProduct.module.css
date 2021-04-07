@@ -82,7 +82,12 @@
 }
 
 .alert{
-    position: absolute;
-    top: 50px;
-    margin-left: 40%;
+    position: fixed;
+    z-index: 999;
+    top: 100px;
+}
+
+.imageName{
+    color: grey;
+    margin-top: 20px;
 }

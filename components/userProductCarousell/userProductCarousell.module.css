@@ -6,6 +6,8 @@
 .productBox{
     display: flex;
     flex-wrap: wrap;
+    min-height: 100px;
+    justify-content: center;
 }
 
 .containerTitle{
@@ -16,6 +18,11 @@
     padding-bottom: 2px;
     padding-right: 10px;
     width: fit-content;
+}
+
+.productLoading{
+    color: grey;    
+    font-weight: 500;
 }
 
 

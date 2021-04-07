@@ -40,16 +40,16 @@ function User({user, dispatch}){
 
                         <div className={styles.user}>
                             <div className={styles.userItem}>
-                               <div className={styles.userItemLHS}> Name : </div> {user["userName"].toUpperCase()}
+                               <div className={styles.userItemLHS}> Name : </div> { user && user["userName"].toUpperCase()}
                             </div>
                             <div className={styles.userItem}>
-                                <div className={styles.userItemLHS}> Phone number: </div> {user["userPhoneNumber"] ? user["userPhoneNumber"] : '-'}
+                                <div className={styles.userItemLHS}> Phone number: </div> { user && user["userPhoneNumber"] ? user["userPhoneNumber"] : '-'}
                             </div>
                             <div className={styles.userItem}>
-                                <div className={styles.userItemLHS}> Email Id : </div>{user["userEmail"].toUpperCase()}
+                                <div className={styles.userItemLHS}> Email Id : </div>{user && user["userEmail"].toUpperCase()}
                             </div>
                             <div className={styles.userItem}>
-                                <div className={styles.userItemLHS}> Address: </div> {user["userAddress"].toUpperCase()}
+                                <div className={styles.userItemLHS}> Address: </div> {user && user["userAddress"].toUpperCase()}
                             </div>
                         </div>
 

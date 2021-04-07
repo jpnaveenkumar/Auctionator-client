@@ -187,3 +187,12 @@
     color: red;
     margin-top: 20px;
 }
+
+.alert{
+    position: fixed;
+    z-index: 999;
+    top: 70px;
+    left: 5%;
+    display: flex;
+    justify-content: center;
+}
