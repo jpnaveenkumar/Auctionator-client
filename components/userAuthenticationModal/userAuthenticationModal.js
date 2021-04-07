@@ -72,7 +72,9 @@ function userAuthenticationModal({onModalClose, dispatch}){
                 "user" : response,
             });
             updateButtonLoading(false);
-            onModalClose();
+            setTimeout(()=>{
+                onModalClose();
+            },2000);
         }, (error) => {
             console.log(error);
             showMessage("error", "Invalid credentials. Please try again.");
@@ -122,7 +124,9 @@ function userAuthenticationModal({onModalClose, dispatch}){
             console.log(response);
             showMessage("success", "You have successfully registered. Please sign in to continue.");
             updateButtonLoading(false);
-            onModalClose();
+            setTimeout(()=>{
+                onModalClose();
+            },2000);
           }, (error) => {
             console.log(error);
             showMessage("error", "The Email ID has already been registered. Please sign in to continue.");

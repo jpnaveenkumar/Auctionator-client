@@ -6,6 +6,7 @@ import { store } from '../../store/store';
 import {useEffect, useState} from 'react';
 import AddProduct from '../../components/addProduct/addProduct';
 import UserProductListing from '../../components/userProductCarousell/userProductCarousell';
+import Image from 'next/image'
 
 function User({user, dispatch}){
 
@@ -35,7 +36,8 @@ function User({user, dispatch}){
 
                     <div className={styles.userDetails}>
                         <div className={styles.userImage}>
-                            <img style={{width: '120px',height:'120px'}} src="/images/profile_pic.jpg"></img>
+                            {/* <img style={{width: '120px',height:'120px'}} src="../../public/images/profile_pic.jpg"></img> */}
+                            <Image src="/images/profile_pic.jpg" alt="me" width="120px" height="120px" />
                         </div>
 
                         <div className={styles.user}>
