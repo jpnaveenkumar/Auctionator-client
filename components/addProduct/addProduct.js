@@ -71,7 +71,7 @@ function AddProduct({user}) {
     const [categoryId, updateCategoryId] = useState("");
     const [startTime, updateStartTime] = useState(new Date().toISOString().substring(0,16));
     const [endTime, updateEndTime] = useState(new Date().toISOString().substring(0,16));
-    const [productObj, setProductObj] = useState({});
+    // const [productObj, setProductObj] = useState({});
     const [productFeatures, updateProductFeatures] = useState([{}]);
 
     const [showAlert, updateShowAlert] = useState(false);
@@ -179,6 +179,7 @@ function AddProduct({user}) {
             return;
         }
         updateButtonLoading(true);
+        let productObj = {};
         productFeatures.map((ele,i) => {
            productObj[ele.feature] = ele.description; 
         })

@@ -36,8 +36,8 @@ function User({user, dispatch}){
 
                     <div className={styles.userDetails}>
                         <div className={styles.userImage}>
-                            {/* <img style={{width: '120px',height:'120px'}} src="../../public/images/profile_pic.jpg"></img> */}
-                            <Image src="/images/profile_pic.jpg" alt="me" width="120px" height="120px" />
+                            <img style={{width: '120px',height:'120px'}} src="https://auctionator-images.s3-ap-southeast-1.amazonaws.com/profile_pic.jpg"></img>
+                            {/* <Image src="https://auctionator-images.s3-ap-southeast-1.amazonaws.com/profile_pic.jpg" alt="me" width="120px" height="120px" /> */}
                         </div>
 
                         <div className={styles.user}>

@@ -23,9 +23,13 @@
     font-weight: 700;
     color: #023e8a;
     font-size: 15px;
+    flex: 1 1 auto;
+    height: 75px;
 }
 .basePrice{
     color: #023e8a;
+    flex: 2 0 auto;
+    padding-left: 3px;
 }
 
 .lhs{

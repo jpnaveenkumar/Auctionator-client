@@ -39,7 +39,7 @@ export default function ProductCard({product, status, timerExpiryCallback})
             </div>
             <div className={styles.cardContent}>
                 <div className={styles.row1}>
-                    <span className={styles.productTitle}>{product["productName"]}</span>
+                    <span className={styles.productTitle}>{product["productName"].length > 50 ? product["productName"].slice(0,30)+" ..." : product["productName"]}</span>
                     <span className={styles.basePrice}>$ {product["productBasePrice"]}</span>
                 </div>
                 <div className={styles.row5}>
