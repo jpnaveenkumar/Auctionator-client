@@ -36,7 +36,7 @@ export default function ValuationTool({onModalClose})
             "model" : carModelName
         }
         updateButtonLoading(true);
-        axios.get("http://auctionatorml-env.eba-52pa63pi.us-east-1.elasticbeanstalk.com/api/v1/carvaluation", {
+        axios.get("http://auctionator-ml.us-east-1.elasticbeanstalk.com/api/v1/carvaluation", {
             params
         }).then(function(response){
             if(response.status == 200){

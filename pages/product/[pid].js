@@ -191,7 +191,7 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                         console.log("bid info : ");
                         console.log(message.body);
                         let body = JSON.parse(message.body);
-                        body["numberOfBids"] = parseInt(body["numberOfBids"]) + 1;
+                        body["numberOfBids"] = parseInt(body["numberOfBids"]);
                         updateProductMeta(body);
                 });
             };
@@ -225,7 +225,7 @@ function ProductDetails({productInfo, err, upcoming, ongoing, user})
                         "owners" : noOfOwners,
                         "model" : carModelName
                     }
-                    axios.get("http://auctionatorml-env.eba-52pa63pi.us-east-1.elasticbeanstalk.com/api/v1/carvaluation", {
+                    axios.get("http://auctionator-ml.us-east-1.elasticbeanstalk.com/api/v1/carvaluation", {
                     params
                     }).then(function(response){
                         if(response.status == 200){
